@@ -1,65 +1,84 @@
-Log Monitoring & Alert Script
+# 🔐 Log Monitoring & Alert Script
 
-A lightweight Bash script for monitoring failed SSH login attempts on Linux servers.
-It parses /var/log/auth.log, counts failed attempts, groups them by IP, and triggers threshold-based alerts.
+A beginner-friendly but production-ready **Linux Bash monitoring tool** that detects failed SSH login attempts in real-time.  
+This script helps identify brute-force attacks and suspicious login behavior by scanning `/var/log/auth.log`.
 
-Features
+---
 
-✅ Count all-time failed SSH login attempts
+## 🚀 Features
+- ✅ Counts total failed SSH login attempts (all time)  
+- ✅ Detects failed attempts in the **last 10 minutes**  
+- ✅ Groups and sorts attempts **by IP address**  
+- ✅ Triggers an **alert** if attempts exceed a threshold (default = 3 in last 10 minutes)  
+- ✅ Runs automatically with **cron**  
 
-✅ Count failed attempts in the last 10 minutes
+---
 
-✅ Group attempts by IP address (most → least)
+## 📂 Project Structure
 
-✅ Trigger an alert file when failed attempts exceed a threshold
+log-monitor/
+├── log-monitor.sh # Main Bash script
+├── alerts/ # Stores alert files when triggered
+└── README.md # Documentation
 
-✅ Simple output for easy debugging
+## 🖥️ Example Output
 
-Example Output:
-
-$ ./log-monitor.sh
 Checking for failed SSH login attempts in /var/log/auth.log...
--------------------------------------------------------
+
 Total failed attempts (all time): 15
-Failed attempts in last 10 minute(s): 0
+Failed attempts in last 10 minute(s): 3
 
 Attempts by IP (most -> least):
-     15 127.0.0.1
+8 192.0.2.10
+4 198.51.100.5
+3 203.0.113.8
 
-✅ No threshold alerts triggered.
+⚠️ ALERT: High number of failed SSH login attempts detected!
 
-Alert System:
+---
 
-* By default, the script creates an alert.log file if failed attempts in the last 10 minutes exceed 5.
+## ⚡ Usage
 
-* You can change the threshold at the top of the script:
+### 1. Clone this repo
 
-THRESHOLD=5
-
-Installation:
-
-1. Clone this repo or copy log-monitor.sh to your server:
-
-git clone https://github.com/SamStar0987/log-monitor
+```bash
+git clone https://github.com/SamStar0987/log-monitor.git
 cd log-monitor
+
+2. Make the script executable
+
 chmod +x log-monitor.sh
 
-2. Run it manually:
+3. Run manually
 
 ./log-monitor.sh
 
-* Roadmap:
+4. Automate with cron (every 10 minutes)
 
- Automate with cron (run every 10 minutes)
+crontab -e
 
- Add log rotation handling
+Add this line at the bottom:
 
- Send desktop/system notifications
+*/10 * * * * /home/itsme/log-monitor/log-monitor.sh >> /home/itsme/log-monitor/log-monitor.log 2>&1
 
- Optional email/Slack alerts
+🛡️  Why This Matters
 
-* Why This Matters:
+Every Linux server is a target for brute-force SSH attacks.
+This script provides a lightweight intrusion detection mechanism without needing heavy tools.
 
-Brute-force SSH attacks are common.
+Helps sysadmins and cloud engineers monitor login security.
 
-This script provides a beginner-friendly, transparent way to monitor suspicious activity without heavy tools like Fail2Ban.
+A practical portfolio project for Cloud / DevOps support roles.
+
+Easy to extend with email, Slack, or AWS CloudWatch alerts.
+
+🧑‍💻 Skills Proven
+
+Linux log management (/var/log/auth.log)
+
+Bash scripting (loops, conditionals, string matching)
+
+Automation with cron
+
+Git & GitHub documentation
+
